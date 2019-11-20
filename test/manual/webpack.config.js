@@ -1,5 +1,3 @@
-const WebpackRtlPlugin = require('webpack-rtl-plugin');
-
 const Self = require('../../');
 
 module.exports = {
@@ -19,12 +17,9 @@ module.exports = {
   },
   plugins: [
     new Self({
-      filename: '[name].client.css',
-      chunkFilename: '[name].chunk.client.css',
-      globalRTLFlag: 'rtlLanguageEnabled',
-      // outputPublicPath: '/bundles/css/',
+      filename: '[name].css',
+      chunkFilename: '[contenthash].css',
     }),
-    new WebpackRtlPlugin(),
   ],
   devServer: {
     contentBase: __dirname,
