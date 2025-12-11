@@ -98,7 +98,8 @@ export function pitch(request) {
 
       namedExport =
         // eslint-disable-next-line no-underscore-dangle
-        originalExports.__esModule && !("locals" in originalExports.default);
+        originalExports.__esModule &&
+        (!originalExports.default || !("locals" in originalExports.default));
 
       if (namedExport) {
         Object.keys(originalExports).forEach((key) => {
@@ -119,29 +120,33 @@ export function pitch(request) {
       if (!Array.isArray(exports)) {
         dependencies = [[null, exports]];
       } else {
-        dependencies = exports.map(([id, content, media, sourceMap]) => {
-          let identifier = id;
-          let context;
-          if (compilation) {
-            const module = findModuleById(compilation, id);
-            identifier = module.identifier();
-            ({ context } = module);
-          } else {
-            // TODO check if this context is used somewhere
-            context = this.rootContext;
-          }
+        dependencies = exports.map(
+          ([id, content, media, sourceMap, supports, layer]) => {
+            let identifier = id;
+            let context;
+            if (compilation) {
+              const module = findModuleById(compilation, id);
+              identifier = module.identifier();
+              ({ context } = module);
+            } else {
+              // TODO check if this context is used somewhere
+              context = this.rootContext;
+            }
 
-          return {
-            identifier,
-            context,
-            content: Buffer.from(content),
-            media,
-            sourceMap: sourceMap
-              ? Buffer.from(JSON.stringify(sourceMap))
-              : // eslint-disable-next-line no-undefined
-                undefined,
-          };
-        });
+            return {
+              identifier,
+              context,
+              content: Buffer.from(content),
+              media,
+              supports,
+              layer,
+              sourceMap: sourceMap
+                ? Buffer.from(JSON.stringify(sourceMap))
+                : // eslint-disable-next-line no-undefined
+                  undefined,
+            };
+          }
+        );
       }
 
       addDependencies(dependencies);
@@ -185,11 +190,15 @@ export function pitch(request) {
     publicPath = AUTO_PUBLIC_PATH;
   }
 
-  if (optionsFromPlugin.experimentalUseImportModule) {
+  if (
+    (typeof optionsFromPlugin.experimentalUseImportModule === "undefined" &&
+      typeof this.importModule === "function") ||
+    optionsFromPlugin.experimentalUseImportModule
+  ) {
     if (!this.importModule) {
       callback(
         new Error(
-          "You are using experimentalUseImportModule but 'this.importModule' is not available in loader context. You need to have at least webpack 5.33.2."
+          "You are using 'experimentalUseImportModule' but 'this.importModule' is not available in loader context. You need to have at least webpack 5.33.2."
         )
       );
       return;
@@ -204,7 +213,7 @@ export function pitch(request) {
         )}`;
 
     this.importModule(
-      `${this.resourcePath}.webpack[javascript/auto]!=!${request}`,
+      `${this.resourcePath}.webpack[javascript/auto]!=!!!${request}`,
       {
         layer: options.layer,
         publicPath: publicPathForExtract,
@@ -357,4 +366,6 @@ export function pitch(request) {
 }
 
 // eslint-disable-next-line func-names
-export default function () {}
+export default function (content) {
+  console.log(content);
+}

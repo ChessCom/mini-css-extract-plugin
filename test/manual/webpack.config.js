@@ -1,6 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const WebpackRtlPlugin = require("webpack-rtl-plugin");
 
+const yn = require("../helpers/yn");
+
 const Self = require("../../");
 
 const ENABLE_HMR =
@@ -13,10 +15,10 @@ const ENABLE_ES_MODULE =
     ? Boolean(process.env.ES_MODULE)
     : true;
 
-const ENABLE_EXPERIMENTAL_USE_IMPORT_MODULE =
-  typeof process.env.EXPERIMENTAL_USE_IMPORT_MODULE !== "undefined"
-    ? Boolean(process.env.EXPERIMENTAL_USE_IMPORT_MODULE)
-    : true;
+const OLD_API =
+  typeof process.env.OLD_API !== "undefined" ? yn(process.env.OLD_API) : true;
+
+console.log(OLD_API);
 
 module.exports = {
   mode: "development",
@@ -68,7 +70,7 @@ module.exports = {
       chunkFilename: "[name].chunk.client.css",
       globalRTLFlag: "rtlLanguageEnabled",
       // outputPublicPath: '/bundles/css/',
-      experimentalUseImportModule: ENABLE_EXPERIMENTAL_USE_IMPORT_MODULE,
+      experimentalUseImportModule: OLD_API,
     }),
     new WebpackRtlPlugin(),
   ],

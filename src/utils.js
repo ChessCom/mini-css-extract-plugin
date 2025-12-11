@@ -68,7 +68,20 @@ function isRelativePath(str) {
   return RELATIVE_PATH_REGEXP.test(str);
 }
 
+// TODO simplify for the next major release
 function stringifyRequest(loaderContext, request) {
+  if (
+    typeof loaderContext.utils !== "undefined" &&
+    typeof loaderContext.utils.contextify === "function"
+  ) {
+    return JSON.stringify(
+      loaderContext.utils.contextify(
+        loaderContext.context || loaderContext.rootContext,
+        request
+      )
+    );
+  }
+
   const splitted = request.split("!");
   const { context } = loaderContext;
 
@@ -102,6 +115,45 @@ function stringifyRequest(loaderContext, request) {
   );
 }
 
+function getUndoPath(filename, outputPath, enforceRelative) {
+  let depth = -1;
+  let append = "";
+
+  // eslint-disable-next-line no-param-reassign
+  outputPath = outputPath.replace(/[\\/]$/, "");
+
+  for (const part of filename.split(/[/\\]+/)) {
+    if (part === "..") {
+      if (depth > -1) {
+        // eslint-disable-next-line no-plusplus
+        depth--;
+      } else {
+        const i = outputPath.lastIndexOf("/");
+        const j = outputPath.lastIndexOf("\\");
+        const pos = i < 0 ? j : j < 0 ? i : Math.max(i, j);
+
+        if (pos < 0) {
+          return `${outputPath}/`;
+        }
+
+        append = `${outputPath.slice(pos + 1)}/${append}`;
+
+        // eslint-disable-next-line no-param-reassign
+        outputPath = outputPath.slice(0, pos);
+      }
+    } else if (part !== ".") {
+      // eslint-disable-next-line no-plusplus
+      depth++;
+    }
+  }
+
+  return depth > 0
+    ? `${"../".repeat(depth)}${append}`
+    : enforceRelative
+    ? `./${append}`
+    : append;
+}
+
 export {
   trueFn,
   findModuleById,
@@ -112,4 +164,5 @@ export {
   ABSOLUTE_PUBLIC_PATH,
   SINGLE_DOT_PATH_SEGMENT,
   stringifyRequest,
+  getUndoPath,
 };

@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.4](https://github.com/webpack-contrib/mini-css-extract-plugin/compare/v2.4.3...v2.4.4) (2021-11-04)
+
+
+### Bug Fixes
+
+* crash with `[contenthash]` ([#869](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/869)) ([57ad127](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/57ad1274328512aebb20fa3b2c27fb9321f835a7))
+* runtime path in modules without context ([#866](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/866)) ([e2e30b2](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/e2e30b280d51f313e3ac566af3b839e580b22ef5))
+
+### [2.4.3](https://github.com/webpack-contrib/mini-css-extract-plugin/compare/v2.4.2...v2.4.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* small perf improvement ([#860](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/860)) ([8c4846b](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/8c4846b3a55770cb7286b1f092e619204503ed7f))
+
+### [2.4.2](https://github.com/webpack-contrib/mini-css-extract-plugin/compare/v2.4.1...v2.4.2) (2021-10-07)
+
+
+### Bug Fixes
+
+* endless apply of loaders, leading to memory allocation failure ([#849](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/849)) ([94ad699](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/94ad699baa1805a0646e7db1d69eb5997df6c8db))
+
+### [2.4.1](https://github.com/webpack-contrib/mini-css-extract-plugin/compare/v2.4.0...v2.4.1) (2021-10-05)
+
+
+### Bug Fixes
+
+* crash with multiple webpack versions ([#845](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/845)) ([b4431cb](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/b4431cb60a6eadcf8c2b614f494faf899c73aaa0))
+
+## [2.4.0](https://github.com/webpack-contrib/mini-css-extract-plugin/compare/v2.3.0...v2.4.0) (2021-10-05)
+
+### Performance
+
+* migrate on new API, this improves performance and memory usage a lot, you need to have at least webpack `5.52.0` (recommended latest stable), for older versions the old API will be used (except explicit enabling of the `experimentalUseImportModule` option)
+
+
+### Features
+
+* added support for `supports()` and `layer()` in `@import` at-rule ([#843](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/843)) ([e751080](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/e751080ad6a81f196d5c26fb79b3c69b9429a634))
+
+
+### Bug Fixes
+
+* crash with the `exportLocalsConvention` option ([#844](https://github.com/webpack-contrib/mini-css-extract-plugin/issues/844)) ([0f8d501](https://github.com/webpack-contrib/mini-css-extract-plugin/commit/0f8d5015c95724b537ddc627758f67020d01ae0b))
+
 ## [2.3.0](https://github.com/webpack-contrib/mini-css-extract-plugin/compare/v2.2.2...v2.3.0) (2021-09-11)
 
 
